@@ -38,7 +38,7 @@ When applied to a page with the following content:
         <div class="brand">A <strong>cool</strong> brand!</div>
         <div class="model-name">Some <div>model</div></div>
         <div class="price">
-            <span class="price-label">not <em>so</em> cheap!</span>
+            <span class="price-label">Not <em>so</em> cheap!</span>
             <span>199$</span>
         </div>
     </div>
