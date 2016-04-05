@@ -1,13 +1,19 @@
 'use strict';
 var domRequest = require('./dom-request');
 var htmlToText = require('html-to-text');
+var clone = require('clone');
 
 module.exports = function (url, fields, cb) {
     domRequest(url, function (err, window) {
         if (err)
             return cb(err);
 
-        findData(null, fields, window.document, cb);
+        findData(null, clone(fields), window.document, function (err, data) {
+            if (err)
+                return cb(err);
+
+            cb(null, data);
+        });
     });
 }
 
