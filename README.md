@@ -45,7 +45,7 @@ When applied to a page with the following content:
 </body>
 ```
 
-..the output(value of data in the the callback) is:
+..the output(value of data in the callback) is:
 ```javascript
 [
     {
