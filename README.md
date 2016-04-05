@@ -6,15 +6,13 @@ Example:
 var url = 'http://some-url.domain';
 
 var fields = {
-    products: {
-        SELECTOR: '.product',
-        'brand': '.brand',
-        'modelName': '.model-name',
-        'price': {
-            SELECTOR: '.price',
-            'label', '.price-label',
-            'price', '.price-field'
-        }
+    SELECTOR: '.product',
+    'brand': '.brand',
+    'modelName': '.model-name',
+    'price': {
+        SELECTOR: '.price',
+        'label', '.price-label',
+        'price', '.price-field'
     }
 };
 
@@ -23,8 +21,6 @@ scrapeFields(url, fields, function (err, data) {
 });
     
 ```
-
-.. note that to retrieve an array it must be wrapped inside an object literal.
 
 When applied to a page with the following content:
 ```html
