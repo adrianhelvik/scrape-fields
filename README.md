@@ -38,7 +38,7 @@ When applied to a page with the following content:
         <div class="brand">A <strong>cool</strong> brand!</div>
         <div class="model-name">Some <div>model</div></div>
         <div class="price">
-            <span class="price-label">Cheaper than ever</span>
+            <span class="price-label">not <em>so</em> cheap!</span>
             <span>199$</span>
         </div>
     </div>
@@ -62,7 +62,7 @@ When applied to a page with the following content:
         brand:  "A cool brand!",
         modelName: "Some model",
         price: {
-            label: "Cheaper than ever",
+            label: "Not so cheap",
             price: "199$"
         }
     },
