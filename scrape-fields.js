@@ -88,6 +88,8 @@ function parseField(err, fields, field, baseNode, cb) {
 }
 
 function parseHTML(htmlObject) {
+    if (! htmlObject)
+        return null;
     if (htmlObject.innerHTML)
         return htmlToText.fromString(htmlObject.innerHTML);
     return htmlToText.fromString(htmlObject);
