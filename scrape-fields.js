@@ -2,13 +2,14 @@
 var domRequest = require('./dom-request');
 var htmlToText = require('html-to-text');
 var clone = require('clone');
+var url = require('url');
 
 module.exports = function (url, fields, cb) {
     domRequest(url, function (err, window) {
         if (err)
             return cb(err);
 
-        findData(null, clone(fields), window.document, function (err, data) {
+        findData(null, clone(fields), window.document, parseBaseUrl(url), function (err, data) {
             if (err)
                 return cb(err);
 
@@ -17,7 +18,7 @@ module.exports = function (url, fields, cb) {
     });
 }
 
-function findData(err, fields, baseNode, cb) {
+function findData(err, fields, baseNode, baseURL, cb) {
     if (err)
         return cb(err);
 
@@ -33,7 +34,7 @@ function findData(err, fields, baseNode, cb) {
 
         return Array.from(baseNodes).forEach(matchingNode => {
             process.nextTick(function () {
-                findData(err, fields, matchingNode, function (err, childResult) {
+                findData(err, fields, matchingNode, baseURL, function (err, childResult) {
                     if (err)
                         return cb(err);
 
@@ -49,16 +50,13 @@ function findData(err, fields, baseNode, cb) {
     var isComplete = false;
 
     Object.keys(fields).forEach(field => {
-        parseField(null, fields, field, baseNode, (err, parsed) => {
+        parseField(null, fields, field, baseNode, baseURL, (err, parsed) => {
             if (isComplete)
                 return;
             if (err) {
                 isComplete = true;
                 return cb(err);
             }
-
-            if (parsed.toString() === '[object HTMLImageElement]')
-                parsed = parsed.src;
 
             result[field] = parsed;
 
@@ -70,13 +68,13 @@ function findData(err, fields, baseNode, cb) {
     });
 }
 
-function parseField(err, fields, field, baseNode, cb) {
+function parseField(err, fields, field, baseNode, baseURL, cb) {
     process.nextTick(function () {
         if (err)
             return cb(err);
 
         if (typeof fields[field] == 'string')
-            return cb(null, parseHTML(baseNode.querySelector(fields[field])));
+            return cb(null, parseHTML(baseNode.querySelector(fields[field]), baseURL));
 
         if (! fields[field])
             return cb(null, null);
@@ -85,7 +83,7 @@ function parseField(err, fields, field, baseNode, cb) {
             return cb(new Error(`Function not supported. Field ${field} was a function`));
 
         if (typeof fields[field] == 'object') {
-            return findData(null, fields[field], baseNode, function (err, result) {
+            return findData(null, fields[field], baseNode, baseURL, function (err, result) {
                 if (err)
                     return cb(err);
                 return cb(null, result);
@@ -96,11 +94,35 @@ function parseField(err, fields, field, baseNode, cb) {
     });
 }
 
-function parseHTML(htmlObject) {
+function parseHTML(htmlObject, baseURL) {
     if (! htmlObject)
         return null;
+
+    if (htmlObject.src) {
+        console.log(parseURL(baseURL, htmlObject.src));
+        return parseURL(baseURL, htmlObject.src);
+    }
+
     if (htmlObject.innerHTML)
         return htmlToText.fromString(htmlObject.innerHTML);
+
     return htmlToText.fromString(htmlObject);
 }
 
+function parseURL(base, extension) {
+    if (! extension)
+        return base;
+
+    if (url.parse(extension).hostname)
+        return parseBaseUrl(extension);
+
+    if (extension[0] == '/')
+        return parseURL(extension.substring(1, extension.length), extension);
+
+    return base + '/' + url.parse(extension).path;
+}
+
+function parseBaseUrl(baseURL) {
+    var parsed = url.parse(baseURL);
+    return parsed.protocol + (parsed.slashes ? '//' : '') + parsed.host;
+}
