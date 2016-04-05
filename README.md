@@ -31,7 +31,7 @@ When applied to a page with the following content:
         <div class="model-name">Some <div>model</div></div>
         <div class="price">
             <span class="price-label">Cheaper than ever</span>
-            <span>99$</span>
+            <span class="price-field">99$</span>
         </div>
     </div>
     <div class="product">
@@ -39,7 +39,7 @@ When applied to a page with the following content:
         <div class="model-name">Some <div>model</div></div>
         <div class="price">
             <span class="price-label">Not <em>so</em> cheap!</span>
-            <span>199$</span>
+            <span class="price-field">199$</span>
         </div>
     </div>
 </body>
