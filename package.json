@@ -1,6 +1,6 @@
 {
   "name": "scrape-fields",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "scrape-fields.js",
   "scripts": {

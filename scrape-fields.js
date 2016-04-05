@@ -57,6 +57,9 @@ function findData(err, fields, baseNode, cb) {
                 return cb(err);
             }
 
+            if (parsed.toString() === '[object HTMLImageElement]')
+                parsed = parsed.src;
+
             result[field] = parsed;
 
             if (Object.keys(result).length === Object.keys(fields).length) {
