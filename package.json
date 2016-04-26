@@ -1,6 +1,6 @@
 {
   "name": "scrape-fields",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "main": "scrape-fields.js",
   "scripts": {
@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "clone": "^1.0.2",
     "html-to-text": "^2.1.0",
     "jsdom": "^8.3.0",
     "request": "^2.69.0"
